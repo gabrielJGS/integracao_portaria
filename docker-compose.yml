@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres
+    volumes:
+      - ./sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+    environment:
+      POSTGRES_PASSWORD: "Integrador@PDF#cSv!"
+      POSTGRES_USER: "portaria"
+      POSTGRES_DB: "integracao_portaria"
+    ports:
+      - "5432:5432"
+    networks:
+      - integracao_portaria_net
+  integracao_portaria:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: integracao_portaria
+    container_name: integracao_portaria
+    env_file: .env
+    volumes:
+      - ./:/usr/src/app/:rw
+    ports:
+      - "3000:3000"
+    networks:
+      - integracao_portaria_net
+    depends_on:
+      - postgres
+  adminer:
+    image: adminer:latest
+    ports:
+      - "8080:8080"
+    networks:
+      - integracao_portaria_net
+networks:
+  integracao_portaria_net:
+    driver: bridge
