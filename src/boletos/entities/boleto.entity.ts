@@ -1,13 +1,25 @@
 import { Table, Column, Model } from 'sequelize-typescript';
 
-@Table
+@Table({ tableName: 'boletos', timestamps: false })
 export class Boleto extends Model {
-  @Column
-  name: string;
+  @Column({ primaryKey: true })
+  id: number;
 
   @Column
-  age: number;
+  nome_sacado: string;
 
   @Column
-  breed: string;
+  id_lote: number;
+
+  @Column
+  valor: number;
+
+  @Column
+  linha_digitavel: string;
+
+  @Column
+  ativo: number;
+
+  @Column
+  criado_em: string;
 }
