@@ -13,17 +13,18 @@ services:
       - "5432:5432"
     networks:
       - integracao_portaria_net
-  integracao_portaria:
+  api:
     build:
-      context: .
       dockerfile: Dockerfile
-    image: integracao_portaria
-    container_name: integracao_portaria
-    env_file: .env
+      context: .
+      target: development
     volumes:
-      - ./:/usr/src/app/:rw
+      - .:/usr/src/app
+    env_file:
+    - .env
+    command: npm run start:dev
     ports:
-      - "3000:3000"
+      - 3000:3000
     networks:
       - integracao_portaria_net
     depends_on:
