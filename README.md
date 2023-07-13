@@ -1,5 +1,17 @@
 # Desafio Técnico Backend NodeJS
 
+### Tarefas
+- [X] Criar base
+- [X] Docker
+- [X] Criar DB/Tabelas
+- [] Rota [POST] /csv Receber CSV/Importar(Atividade 1)
+- [] Conversão nome_unidade x nome_lote(Atividade 2)
+- [] Separar PDF(Atividade 3)
+- [] Rota [GET] /boletos (Atividade 4)
+- [] Gerar relatório - Parâmetro relatorio=1 (Atividade 5)
+- [] Documentação
+- [] Testes
+
 **Desafio técnico de backend da Green Acesso.**
 
 Crie um projeto em Javascript ou Typescript, utilizando NodeJS e banco de dados SQL (qualquer um) para fazer a importação de um `.csv`  e um `.pdf` para o nosso sistema e por fim a exportação de um `.pdf` .
