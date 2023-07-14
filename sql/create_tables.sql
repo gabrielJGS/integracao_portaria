@@ -1,28 +1,29 @@
 \c integracao_portaria;
 
 CREATE TABLE lotes (
-	id INT NOT NULL,
+	id SERIAL PRIMARY KEY,
 	nome VARCHAR(100),
 	ativo BOOLEAN,
-	criado_em TIMESTAMP,
-    CONSTRAINT "PK_Lotes" PRIMARY KEY ("id")
+	criado_em TIMESTAMP
 );
 
 CREATE TABLE boletos (
-	id INT NOT NULL,
+	id SERIAL PRIMARY KEY,
 	nome_sacado VARCHAR(255),
 	id_lote INT NOT NULL,
 	valor DECIMAL,
 	linha_digitavel VARCHAR(255),
 	ativo BOOLEAN,
 	criado_em TIMESTAMP,
-    CONSTRAINT "PK_Boletos" PRIMARY KEY ("id"),
     CONSTRAINT "FK_boletos_lotes" FOREIGN KEY ("id_lote") REFERENCES "lotes" ("id")
 );
 
 CREATE TABLE depara_lotes (
 	id INT NOT NULL,
 	nome_lote INT NOT NULL,
-    CONSTRAINT "PK_depara_lotes" PRIMARY KEY ("id"),
-    CONSTRAINT "FK_depara_lotes_lotes" FOREIGN KEY ("id") REFERENCES "lotes" ("id")
+    CONSTRAINT "PK_depara_lotes" PRIMARY KEY ("id")
 );
+
+INSERT INTO depara_lotes(id, nome_lote) values (3, 0017);
+INSERT INTO depara_lotes(id, nome_lote) values(6, 0018);
+INSERT INTO depara_lotes(id, nome_lote) values(7, 0019);
