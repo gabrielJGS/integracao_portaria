@@ -2,7 +2,7 @@ import { Table, Column, Model } from 'sequelize-typescript';
 
 @Table({ tableName: 'boletos', timestamps: false })
 export class Boleto extends Model {
-  @Column({ primaryKey: true })
+  @Column({ primaryKey: true, autoIncrement: true })
   id: number;
 
   @Column
@@ -18,7 +18,7 @@ export class Boleto extends Model {
   linha_digitavel: string;
 
   @Column
-  ativo: number;
+  ativo: boolean;
 
   @Column
   criado_em: string;
