@@ -1,14 +1,31 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Param,
+  Delete,
+  UseInterceptors,
+  UploadedFile,
+} from '@nestjs/common';
 import { BoletosService } from './boletos.service';
-import { CreateBoletoDto } from './dto/create-boleto.dto';
+import { FileInterceptor } from '@nestjs/platform-express/multer';
+import { Express } from 'express';
+import csvConfig from './utils/multer-config';
+import { parseFileConfig } from './utils/parse-config';
+import { readCSV } from './utils/file-reader';
 
 @Controller('boletos')
 export class BoletosController {
   constructor(private readonly boletosService: BoletosService) {}
 
   @Post()
-  create(@Body() createBoletoDto: CreateBoletoDto) {
-    return this.boletosService.create(createBoletoDto);
+  @UseInterceptors(FileInterceptor('file', csvConfig))
+  async create(
+    @UploadedFile(parseFileConfig)
+    file: Express.Multer.File,
+  ) {
+    const csv = await readCSV(file.path);
+    return this.boletosService.create(csv);
   }
 
   @Get()
