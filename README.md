@@ -4,8 +4,8 @@
 - [X] Criar base
 - [X] Docker
 - [X] Criar DB/Tabelas
-- [] Rota [POST] /csv Receber CSV/Importar(Atividade 1)
-- [] Conversão nome_unidade x nome_lote(Atividade 2)
+- [X] Rota [POST] /boletos Receber CSV/Importar(Atividade 1)
+- [X] Conversão nome_unidade x nome_lote(Atividade 2)
 - [] Separar PDF(Atividade 3)
 - [] Rota [GET] /boletos (Atividade 4)
 - [] Gerar relatório - Parâmetro relatorio=1 (Atividade 5)
