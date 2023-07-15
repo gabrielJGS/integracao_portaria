@@ -38,7 +38,6 @@ export class BoletosService {
             id: id_lote,
             nome: bols.nome,
             ativo: true,
-            criado_em: new Date().toISOString(),
           });
         }
 
@@ -49,7 +48,6 @@ export class BoletosService {
             valor: bols.valor,
             linha_digitavel: bols.linha_digitavel,
             ativo: true,
-            criado_em: new Date().toISOString(),
           })
           .catch((err) => {
             throw new Error(`Erro ao cadastrar novo boleto:\n${err}`);
@@ -80,8 +78,7 @@ export class BoletosService {
     } else {
       if (valor_final) params.valor = { [Op.lte]: valor_final };
     }
-    console.log(params);
-    return this.boletosRepository.findAll<Boleto>({ where: params });
+    return this.boletosRepository.findAll<Boleto>({ where: params, raw: true });
   }
 
   findOne(id: number) {

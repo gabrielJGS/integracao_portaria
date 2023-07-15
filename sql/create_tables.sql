@@ -5,6 +5,7 @@ CREATE TABLE lotes (
 	nome VARCHAR(100),
 	ativo BOOLEAN,
 	criado_em TIMESTAMP
+	DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE boletos (
@@ -14,7 +15,9 @@ CREATE TABLE boletos (
 	valor DECIMAL,
 	linha_digitavel VARCHAR(255),
 	ativo BOOLEAN,
-	criado_em TIMESTAMP,
+	criado_em TIMESTAMP
+	DEFAULT CURRENT_TIMESTAMP,
+
     CONSTRAINT "FK_boletos_lotes" FOREIGN KEY ("id_lote") REFERENCES "lotes" ("id")
 );
 

@@ -21,5 +21,5 @@ export class Boleto extends Model {
   ativo: boolean;
 
   @Column
-  criado_em: string;
+  criado_em: Date;
 }
