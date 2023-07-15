@@ -2,10 +2,9 @@ import {
   Controller,
   Get,
   Post,
-  Param,
-  Delete,
   UseInterceptors,
   UploadedFile,
+  Query,
 } from '@nestjs/common';
 import { BoletosService } from './boletos.service';
 import { FileInterceptor } from '@nestjs/platform-express/multer';
@@ -29,17 +28,27 @@ export class BoletosController {
   }
 
   @Get()
-  findAll() {
-    return this.boletosService.findAll();
+  findAll(
+    @Query('nome') nome: string | null = null,
+    @Query('valor_inicial') valor_inicial: number | null = null,
+    @Query('valor_final') valor_final: number | null = null,
+    @Query('id_lote') id_lote: number | null = null,
+  ) {
+    return this.boletosService.findAll(
+      nome,
+      valor_inicial,
+      valor_final,
+      id_lote,
+    );
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.boletosService.findOne(+id);
-  }
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   return this.boletosService.findOne(+id);
+  // }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.boletosService.remove(+id);
-  }
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.boletosService.remove(+id);
+  // }
 }
