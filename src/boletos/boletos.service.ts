@@ -1,5 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { CreateBoletoDto } from './dto/create-boleto.dto';
+import { Op } from 'sequelize';
 
 import { Lote } from './entities/lote.entity';
 import { Boleto } from './entities/boleto.entity';
@@ -59,8 +60,28 @@ export class BoletosService {
     return boletos;
   }
 
-  findAll() {
-    return this.boletosRepository.findAll<Boleto>();
+  findAll(
+    nome: string | null,
+    valor_inicial: number | null,
+    valor_final: number | null,
+    id_lote: number | null,
+  ) {
+    let params: any = {};
+    if (nome) params.nome_sacado = { [Op.like]: nome };
+    if (id_lote) params.id_lote = id_lote;
+
+    // Monta o parâmetro do valor para funcionar caso exista apenas 1 ou outro ou ambos
+    if (valor_inicial) {
+      if (valor_final) {
+        params.valor = { [Op.gte]: valor_inicial, [Op.lte]: valor_final };
+      } else {
+        params.valor = { [Op.gte]: valor_inicial };
+      }
+    } else {
+      if (valor_final) params.valor = { [Op.lte]: valor_final };
+    }
+    console.log(params);
+    return this.boletosRepository.findAll<Boleto>({ where: params });
   }
 
   findOne(id: number) {
