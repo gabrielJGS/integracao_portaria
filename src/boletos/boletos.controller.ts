@@ -12,11 +12,8 @@ import { Express } from 'express';
 import csvConfig from './utils/multer-config';
 import { parseFileConfig } from './utils/parse-config';
 import { readCSV } from './utils/file-reader';
-import {
-  ApiQuery,
-  ApiBody,
-  ApiConsumes,
-} from '@nestjs/swagger';
+import { ApiQuery, ApiBody, ApiConsumes } from '@nestjs/swagger';
+import { writePDF } from './utils/file-writer';
 
 @Controller('boletos')
 export class BoletosController {
@@ -46,6 +43,12 @@ export class BoletosController {
 
   @Get()
   @ApiQuery({
+    name: 'relatorio',
+    description: 'Retorna o resultado em um pdf',
+    required: false,
+    example: '0',
+  })
+  @ApiQuery({
     name: 'id_lote',
     description: 'Busca pelo id do lote informado',
     required: false,
@@ -65,18 +68,21 @@ export class BoletosController {
     description: 'Busca pelo nome, usar entre % para like',
     required: false,
   })
-  findAll(
+  async findAll(
     @Query('nome') nome: string | null = null,
     @Query('valor_inicial') valor_inicial: number | null = null,
     @Query('valor_final') valor_final: number | null = null,
     @Query('id_lote') id_lote: number | null = null,
+    @Query('relatorio') relatorio: number = 0,
   ) {
-    return this.boletosService.findAll(
+    const rel = await this.boletosService.findAll(
       nome,
       valor_inicial,
       valor_final,
       id_lote,
     );
+    if (+relatorio === 1) return { base64: await writePDF(rel) };
+    return rel;
   }
 
   // @Get(':id')
