@@ -13,7 +13,9 @@ OU para inserir no banco de dados e usar os "novos" ids?
 
 ### Como usar
 - Realizar o git clone  
-- Copiar o arquivo .env.example para .env  
+```
+ Copiar o arquivo .env.example para .env  
+```
 - Executar o comando abaixo para subir os containers
 ```
 docker-compose up -d
