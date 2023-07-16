@@ -1,4 +1,6 @@
 import { CreateBoletoDto } from '../dto/create-boleto.dto';
+import { IBoleto } from '../models/boleto.model';
+const pdf = require('pdf-parse');
 
 const fs = require('fs');
 const csv = require('fast-csv');
@@ -24,4 +26,36 @@ const readCSV = async (filePath: string): Promise<CreateBoletoDto[]> => {
   return data;
 };
 
-export { readCSV };
+const readPDF = async (filePath: string): Promise<IBoleto[]> => {
+  return new Promise((resolve, reject) => {
+    let dataBuffer = fs.readFileSync(filePath);
+
+    pdf(dataBuffer)
+      .then((data: any) => {
+        const pages: any = [];
+        const text = data.text.split('\n');
+        let obj = new IBoleto();
+        text.forEach((row: string) => {
+          if (row == '' || row == ' ') return;
+
+          if (row.includes('nome:')) obj.nome = row.replace('nome:', '').trim();
+          if (row.includes('unidade:'))
+            obj.unidade = +row.replace('unidade:', '').trim();
+          if (row.includes('valor:'))
+            obj.valor = +row.replace('valor:', '').trim();
+          if (row.includes('linha_digitavel:')) {
+            obj.linha_digitavel = row.replace('linha_digitavel:', '').trim();
+            pages.push(obj);
+            obj = new IBoleto();
+          }
+        });
+        console.log(pages);
+        resolve(pages);
+      })
+      .catch((e: any) => {
+        reject(e);
+      });
+  });
+};
+
+export { readCSV, readPDF };
