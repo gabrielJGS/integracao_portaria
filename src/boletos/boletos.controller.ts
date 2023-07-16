@@ -9,9 +9,9 @@ import {
 import { BoletosService } from './boletos.service';
 import { FileInterceptor } from '@nestjs/platform-express/multer';
 import { Express } from 'express';
-import csvConfig from './utils/multer-config';
-import { parseFileConfig } from './utils/parse-config';
-import { readCSV } from './utils/file-reader';
+import { csvConfig, pdfConfig } from './utils/multer-config';
+import { parseFileConfig, parsePdfConfig } from './utils/parse-config';
+import { readCSV, readPDF } from './utils/file-reader';
 import { ApiQuery, ApiBody, ApiConsumes } from '@nestjs/swagger';
 import { writePDF } from './utils/file-writer';
 
@@ -85,13 +85,41 @@ export class BoletosController {
     return rel;
   }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.boletosService.findOne(+id);
-  // }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.boletosService.remove(+id);
-  // }
+  @Post('/pdf')
+  @UseInterceptors(FileInterceptor('file', pdfConfig))
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
+  async parsePdfs(
+    @UploadedFile(parsePdfConfig)
+    file: Express.Multer.File,
+  ) {
+    const boletosPdf = await readPDF(file.path);
+    const names = boletosPdf.map((bol) => {
+      return bol.nome!;
+    });
+    if (!names || names === undefined)
+      return `Nenhum nome foi encontrado no pdf`;
+    const boletosDB = await this.boletosService.getBoletosByNames(names);
+    const boletosMerged = boletosPdf.map((bol) => {
+      if (!bol.id) {
+        const merge = boletosDB.find((bDb) => {
+          return bDb.nome_sacado === bol.nome;
+        });
+        // O objeto abaixo sempre vai existir, já q foi buscado por nome no DB
+        bol.id = merge!.id;
+      }
+      return bol;
+    });
+    return writePDF(boletosMerged);
+  }
 }
