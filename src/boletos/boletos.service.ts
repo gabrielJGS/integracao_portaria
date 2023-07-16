@@ -81,11 +81,11 @@ export class BoletosService {
     return this.boletosRepository.findAll<Boleto>({ where: params, raw: true });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} boleto`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} boleto`;
+  async getBoletosByNames(names: string[]) {
+    const boletos = await this.boletosRepository.findAll({
+      where: { nome_sacado: { [Op.in]: names } },
+      raw: true,
+    });
+    return boletos;
   }
 }
