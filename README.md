@@ -1,20 +1,57 @@
 # Desafio Técnico Backend NodeJS
 
-### Tarefas
-- [X] Criar base
-- [X] Docker
-- [X] Criar DB/Tabelas
-- [X] Rota [POST] /boletos Receber CSV/Importar(Atividade 1)
-- [X] Conversão nome_unidade x nome_lote(Atividade 2)
-- [] Separar PDF(Atividade 3)
-- [X] Rota [GET] /boletos (Atividade 4)
-- [X] Gerar relatório - Parâmetro relatorio=1 (Atividade 5)
-- [X] Documentação
-- [] Testes
+## Duvidas
 
+A atividade 3, deveria ser para mapear os dados do pdf recebidos COM os JÁ EXISTENTES no banco de dados
+OU para inserir no banco de dados e usar os "novos" ids?
+
+### TODOs/Melhorias
+
+- [] Melhorar a leitura de pdf, para separar ao invés de recriar o PDF
+- [] Adicionar testes unitários
+- [] Adicionar um container NGINX como proxy para o serviço, fazendo o load-balancing, cache e acesso aos arquivos da pasta /public
+
+### Como usar
+- Realizar o git clone  
+- Copiar o arquivo .env.example para .env  
+- Executar o comando abaixo para subir os containers
+```
+docker-compose up -d
+```
+- O container da API será acessível por
+```
+http://localhost:3000/
+```
+- A documentação está disponível em:
+```
+http://localhost:3000/docs
+```
+- Também é possível consultar o DB pelo gerenciador Adminer em:
+```
+http://localhost:8080/
+```
+- Caso deseje executar os testes e2e/integração(unitarios não implementados)
+```
+npm run test:e2e
+```
+
+### Tecnologias
+
+![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+![NestJS](https://img.shields.io/badge/nestjs-%23E0234E.svg?style=for-the-badge&logo=nestjs&logoColor=white)
+![Jest](https://img.shields.io/badge/-jest-%23C21325?style=for-the-badge&logo=jest&logoColor=white)
+![Sequelize](https://img.shields.io/badge/Sequelize-52B0E7?style=for-the-badge&logo=Sequelize&logoColor=white)
+![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
+![Swagger](https://img.shields.io/badge/-Swagger-%23Clojure?style=for-the-badge&logo=swagger&logoColor=white)
+
+### Libs
+base64-stream, fast-csv, pdf-parse, pdfkit, pdfkit-table
+
+# Texto desafio
 **Desafio técnico de backend da Green Acesso.**
 
-Crie um projeto em Javascript ou Typescript, utilizando NodeJS e banco de dados SQL (qualquer um) para fazer a importação de um `.csv`  e um `.pdf` para o nosso sistema e por fim a exportação de um `.pdf` .
+Crie um projeto em Javascript ou Typescript, utilizando NodeJS e banco de dados SQL (qualquer um) para fazer a importação de um `.csv` e um `.pdf` para o nosso sistema e por fim a exportação de um `.pdf` .
 
 Os pontos de análise do teste serão (na seguinte ordem de importância):
 
@@ -95,7 +132,7 @@ Você deve arrumar alguma solução para fazer esse mapeamento para descobrir qu
 ```sql
 Sistema Financeiro (Externo)
 
-nome_unidade 
+nome_unidade
 17
 18
 19
@@ -137,7 +174,7 @@ pdf
 3 PAGINA BOLETO MARCOS
 ```
 
-E ele te disse que sempre vai enviar os boletos nessa ordem FIXA, então você precisa arrumar uma forma de receber esses boletos na ordem correta para mapear eles com o registro equivalente da tabela de boletos. 
+E ele te disse que sempre vai enviar os boletos nessa ordem FIXA, então você precisa arrumar uma forma de receber esses boletos na ordem correta para mapear eles com o registro equivalente da tabela de boletos.
 
 **OBS:** Você que será responsável por criar um PDF fake com alguns dados fictícios (pode ser apenas o nome da pessoa em cada página) e anexe esse PDF o projeto do git.
 
@@ -189,21 +226,21 @@ Você deve utilizar o git, descreva no README algo que achar pertinente e **não
 
 ## Entrega
 
-*ANTES DE FAZER O TESTE SE ATENTE AOS SEGUINTES PONTOS*
+_ANTES DE FAZER O TESTE SE ATENTE AOS SEGUINTES PONTOS_
 
 - O salário é entre 4 e 6 mil PJ;
-- Filtramos dos 1.500 candidatos 260 para fazer o teste, pela quantidade de pessoas pode ser que *NÃO ENVIAREMOS* feedback construtivo para todos os que fizeram o teste;
+- Filtramos dos 1.500 candidatos 260 para fazer o teste, pela quantidade de pessoas pode ser que _NÃO ENVIAREMOS_ feedback construtivo para todos os que fizeram o teste;
 - A vaga é focada exclusivamente em backend, o responsável não irá executar tarefas de front-end;
 - Após o teste selecionaremos os últimos candidatos para a entrevista;
-- É apenas *UMA* vaga;
-- A vaga é para *PLENO (inicial, intermediário ou final)*, não recomendamos sêniors fazerem o teste pois o salário não é compatível;
+- É apenas _UMA_ vaga;
+- A vaga é para _PLENO (inicial, intermediário ou final)_, não recomendamos sêniors fazerem o teste pois o salário não é compatível;
 - Não vamos aceitar testes enviados após o horário limite (mesmo que seja 1 minuto).
 
-Por favor, **se o salário não estiver na sua margem**, ou você não quiser fazer o teste e poder não receber um feedback, ou não quer trabalhar com backend ***NAO APLIQUE PARA A VAGA*.**
+Por favor, **se o salário não estiver na sua margem**, ou você não quiser fazer o teste e poder não receber um feedback, ou não quer trabalhar com backend **_NAO APLIQUE PARA A VAGA_.**
 
 Se quiser cancelar sua candidatura é só não enviar o teste.
 
-Você *deve enviar o link do github (ou outro) e o link da coleção do Postman ou outro para importarmos e testar* para o seguinte formulário: https://forms.gle/Fi55mKj1YjhB52zF8
+Você _deve enviar o link do github (ou outro) e o link da coleção do Postman ou outro para importarmos e testar_ para o seguinte formulário: https://forms.gle/Fi55mKj1YjhB52zF8
 
 **Não vamos receber** o link por mensagem no Linkedin
 
@@ -212,6 +249,7 @@ Data de entrega do teste até: **15/07 (Sábado) (às 23:59hrs)**
 Boa Sorte! Happy Coding!
 
 # Framework:
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
