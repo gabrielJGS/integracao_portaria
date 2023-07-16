@@ -1,9 +1,12 @@
 import { Boleto } from '../entities/boleto.entity';
+import { createWriteStream } from 'fs';
+import { IBoleto } from '../models/boleto.model';
 
-const PDFDocument = require('pdfkit-table');
+const PDFDocument = require('pdfkit');
+const PDFTable = require('pdfkit-table');
 const { Base64Encode } = require('base64-stream');
 
-const writePDF = async (relatorio: Boleto[]): Promise<any> => {
+const writePDFTable = async (relatorio: Boleto[]): Promise<any> => {
   const table = {
     title: 'Relatório lotes',
     subtitle: 'Integração portaria Green Acesso',
@@ -21,11 +24,29 @@ const writePDF = async (relatorio: Boleto[]): Promise<any> => {
     }),
   };
 
-  const pdf = new PDFDocument();
+  const pdf = new PDFTable();
   const rel = await pdf.table(table);
   pdf.text(rel);
   pdf.end();
   return await toBase64(pdf);
+};
+
+const writePDF = (relatorio: IBoleto[]): string[] => {
+  const paths: string[] = [];
+  relatorio.map((rel) => {
+    const path = `public/pdf/${rel.nome}.pdf`;
+
+    const pdf = new PDFDocument();
+    pdf.pipe(createWriteStream(path)); // write to PDF
+    pdf.text(`id:${rel.id}`);
+    pdf.text(`nome:${rel.nome}`);
+    pdf.text(`unidade:${rel.unidade}`);
+    pdf.text(`valor:${rel.valor}`);
+    pdf.text(`linha_digitavel:${rel.linha_digitavel}`);
+    pdf.end();
+    paths.push(path);
+  });
+  return paths;
 };
 
 const toBase64 = (doc: any) => {
@@ -47,4 +68,4 @@ const toBase64 = (doc: any) => {
   });
 };
 
-export { writePDF };
+export { writePDFTable, writePDF };
