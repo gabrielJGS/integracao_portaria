@@ -16,4 +16,19 @@ const csvConfig = {
   }),
 };
 
-export default csvConfig;
+const pdfConfig = {
+  storage: diskStorage({
+    destination: './temp/pdf',
+    filename: (req, file, cb) => {
+      const fileName =
+        path.parse(file.originalname).name.replace(/\s/g, '') +
+        '-' +
+        new Date().getTime();
+
+      const extension = path.parse(file.originalname).ext;
+      cb(null, `${fileName}${extension}`);
+    },
+  }),
+};
+
+export { csvConfig, pdfConfig };

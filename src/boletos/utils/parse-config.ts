@@ -11,4 +11,11 @@ const parseFileConfig = new ParseFilePipe({
   ],
 });
 
-export { parseFileConfig };
+const parsePdfConfig = new ParseFilePipe({
+  validators: [
+    new MaxFileSizeValidator({ maxSize: 5000*10000 }),
+    new FileTypeValidator({ fileType: 'application/pdf' }),
+  ],
+});
+
+export { parseFileConfig, parsePdfConfig };
