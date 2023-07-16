@@ -16,6 +16,10 @@ OU para inserir no banco de dados e usar os "novos" ids?
 ```
  Copiar o arquivo .env.example para .env  
 ```
+- Executar o comando abaixo para instalar as dependências
+```
+npm ci
+```
 - Executar o comando abaixo para subir os containers
 ```
 docker-compose up -d
