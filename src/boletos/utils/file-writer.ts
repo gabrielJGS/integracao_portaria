@@ -34,7 +34,7 @@ const writePDFTable = async (relatorio: Boleto[]): Promise<any> => {
 const writePDF = (relatorio: IBoleto[]): string[] => {
   const paths: string[] = [];
   relatorio.map((rel) => {
-    const path = `public/pdf/${rel.nome}.pdf`;
+    const path = `public/pdf/${rel.id}.pdf`;
 
     const pdf = new PDFDocument();
     pdf.pipe(createWriteStream(path)); // write to PDF
